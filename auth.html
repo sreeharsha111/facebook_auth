@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>facebook auth</title>
+    
+    
+    <body>
+        <button onclick="signin()" id="signin">
+            sign in with facebook
+        </button>
+        
+        <button onclick="signin1()" id="signin">
+            sign in with google
+        </button>
+
+        
+
+        <!---div section-->
+        <div id="profilename">
+
+        </div>
+        <div id="display-name"></div>
+        <div id="user-email">
+
+        </div>
+    </body>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-auth.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyD6HUz8ZNkLoh-3Ti0TciK8IEoDO4lyX_k",
+    authDomain: "project1-669d9.firebaseapp.com",
+    databaseURL: "https://project1-669d9.firebaseio.com",
+    projectId: "project1-669d9",
+    storageBucket: "project1-669d9.appspot.com",
+    messagingSenderId: "494519052708",
+    appId: "1:494519052708:web:9602bdd0bc2fca0690f931"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+<script>
+function signin()
+{
+    var provider = new firebase.auth.FacebookAuthProvider();
+    provider.addScope('user_birthday');
+    firebase.auth().useDeviceLanguage();
+    firebase.auth().signInWithPopup(provider).then(function(result) {
+  // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+  var token = result.credential.accessToken;
+  // The signed-in user info.
+  var user = result.user;
+  console.log(user);
+  var dispalyname=document.querySelector("#display-name");
+  dispalyname.innerHTML=user.displayName;
+  var userEmail= document.querySelector("#user-email");
+  userEmail.innerHTML=user.email;
+  var img = document.createElement('img');
+   img.src = user.photoURL;
+   document.getElementById('profilename').appendChild(img)
+  // ...
+}).catch(function(error) {
+  // Handle Errors here.
+  var errorCode = error.code;
+  var errorMessage = error.message;
+  // The email of the user's account used.
+  var email = error.email;
+  // The firebase.auth.AuthCredential type that was used.
+  var credential = error.credential;
+  // ...
+});
+}
+</script>
+<script>
+function signin1()
+{
+    var provider = new firebase.auth.GoogleAuthProvider();
+    provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+    firebase.auth().useDeviceLanguage();
+    firebase.auth().signInWithPopup(provider).then(function(result) {
+  // This gives you a Google Access Token. You can use it to access the Google API.
+  var token = result.credential.accessToken;
+  // The signed-in user info.
+  var user = result.user;
+  console.log(user);
+  // ...
+}).catch(function(error) {
+  // Handle Errors here.
+  var errorCode = error.code;
+  var errorMessage = error.message;
+  // The email of the user's account used.
+  var email = error.email;
+  // The firebase.auth.AuthCredential type that was used.
+  var credential = error.credential;
+  // ...
+});
+}
+</script>
+</head>
+</html>
